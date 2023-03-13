@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import "./base/assets/css/style.css";
+@import "./base/assets/css/bootstrap.5.1.1.min.css";
+@import "./base/assets/css/M_style.css";
+@import "./base/assets/css/plugin/animate.css";
+/* @import "./base/assets/css/plugin/jquery-ui.min.css"; */
+@import "./base/assets/css/plugin/magnific-popup.css";
+@import "./base/assets/css/plugin/nice-select.v1.0.css";
+/* @import "./base/assets/css/plugin/owl.carousel.v2.3.4.min.css"; */
+@import "./base/assets/css/plugin/slick.css";
+

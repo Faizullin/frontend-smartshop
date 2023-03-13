@@ -1,0 +1,4 @@
+.selected_tag{
+	color: #ffffff;
+	background-color: var(--thm-base);
+}
