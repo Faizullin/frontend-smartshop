@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { registerUser } from "../../api/auth";
 import BreadCrumbIMage from "../../base/assets/images/inner-pages/breadcum-bg.png"
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 
@@ -28,28 +27,28 @@ export default function AuthRegister(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setMessage('')
-        setErrors({})
-        setIsLoading(true)
+        // setMessage('')
+        // setErrors({})
+        // setIsLoading(true)
         
-        registerUser({
-            ...data
-        }).then((response)=>{
-            console.log("Response",response)
-        }).catch(error=>{
-            console.log("Error",error)
+        // registerUser({
+        //     ...data
+        // }).then((response)=>{
+        //     console.log("Response",response)
+        // }).catch(error=>{
+        //     console.log("Error",error)
 
-            if(error.response && error.response.data && !error.response.data.status){
-                this.errors = error.response.data.errors || {};
-                this.message = error.response.data.message || null;
-                setErrors(errors => ({
-                    ...error.response.data.errors,
-                }))
-                setMessage(message => error.response.data.message)
-            }
-        }).finally(()=>{
-            setIsLoading(false)
-        });
+        //     if(error.response && error.response.data && !error.response.data.status){
+        //         this.errors = error.response.data.errors || {};
+        //         this.message = error.response.data.message || null;
+        //         setErrors(errors => ({
+        //             ...error.response.data.errors,
+        //         }))
+        //         setMessage(message => error.response.data.message)
+        //     }
+        // }).finally(()=>{
+        //     setIsLoading(false)
+        // });
     }
 
 

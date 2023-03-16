@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/actions/authAction";
+import { authActions } from "../../redux/reducers/authReducer";
+
+
+
 
 export default function AuthLogin(){
     const [message,setMessage] = useState('');
@@ -16,39 +21,32 @@ export default function AuthLogin(){
         'password': '',
     })
 
-    const handleChange = (e) => {
+    const dispatch = useDispatch();
 
+
+
+
+    const handleChange = (e) => {
         setData(data => ({
             ...data,
             [e.target.name]: e.target.value,
         }))
     }
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const error = useSelector(state => state.auth.error);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setMessage('')
-        setErrors({})
-        setIsLoading(true)
-        
-        loginUser({
-            ...data
-        }).then((response)=>{
-            console.log("Response",response)
-        }).catch(error=>{
-            console.log("Error",error)
+    useEffect(() => {
+        if (isAuthenticated) {
+            console.log("Redirect to dashboard")
+        } else {
+            console.log("Not auth")
+        }
+    }, [isAuthenticated]);
 
-            if(error.response && error.response.data && !error.response.data.status){
-                this.errors = error.response.data.errors || {};
-                this.message = error.response.data.message || null;
-                setErrors(errors => ({
-                    ...error.response.data.errors,
-                }))
-                setMessage(message => error.response.data.message)
-            }
-        }).finally(()=>{
-            setIsLoading(false)
-        });
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(login(data['email'], data['password']));
+    };
 
     return (
         <main className="overflow-hidden ">
@@ -80,9 +78,7 @@ export default function AuthLogin(){
                                     <p>Don't have an account yet? <Link to={`/auth/register`}>Sign up for free</Link></p>
                                 </div>
                                 <form className="common-form" onSubmit={handleSubmit}>
-                                    <div v-if="message" className="invalid-feedback">
-                                        <strong>{  message }</strong>
-                                    </div>
+                                    {error && (<div className="invalid-feedback"><strong><p>{error}</p></strong></div>) }
                                     <div className="form-group">
                                         <input type="text" className="form-control" placeholder="Your User Name (Or) Email Address" autoComplete="email"
                                             name="email" value={ data['email'] } onChange={handleChange}/> 
