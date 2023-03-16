@@ -1,11 +1,5 @@
-import { useEffect } from "react";
-
-    
 export default function App({children}){ 
   var cart_number= 0;
-  useEffect(() => {
-    console.log("App")
-  }, [])
   return (
       <>
           <header className="header-style-3">

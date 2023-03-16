@@ -2,3 +2,8 @@
 	color: #ffffff;
 	background-color: var(--thm-base);
 }
+
+.popular-tag .active {
+	color: #ffffff !important;
+	background-color: var(--thm-base) !important;
+  }

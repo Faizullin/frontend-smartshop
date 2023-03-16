@@ -1,0 +1,13 @@
+{
+    "shops": [
+        {
+            "id": 1,
+            "name": "Shop 1",
+            "address": "shop-1-addres",
+            "owner": {
+                "id": 1,
+                "name": "User 1"
+            }
+        }
+    ]
+}

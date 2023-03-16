@@ -1,26 +1,36 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
+import ProductHoverImage from "../../base/assets/images/inner-pages/product-hover-2.jpg"
+import { getFilters, getProducts } from "../../redux/actions/productAction";
+import FiltersSidebar from "./FiltersSidebar";
 
 
 export default function ProductIndex(){
-    const [popupProduct,setPopupProduct] = useState()
-    const [products,setProducts] = useState([])
-    const [filters,setFilters] = useState({
-        categories: [],
-        tags: [],
+    const { products, loading, filters, currentFilters } = useSelector(state => {
+        console.log("Store",state)
+        return state.productReducer
+    });
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getProducts());
+        dispatch(getFilters());
+    }, [dispatch]);
+    const applyFilters = (filters = null) => {
+        console.log(filters,currentFilters)
+        dispatch(getProducts(filters ?? {}));
+    }
+
+
+    const [popupProduct,setPopupProduct] = useState({
+        title: '',
+        description: '',
+        price: null
     })
 
-    const getProducts = () => {
-        axios.get('http://localhost:1000/api/shops').then((response) => {
-            console.log(response.data)
-            setProducts(response.data )
-        })
-    }
-    useEffect(() => {
-        getProducts()
-    }, [])
 
 
     return (
@@ -51,54 +61,34 @@ export default function ProductIndex(){
                     <div className="col-xl-12 wow fadeInUp animated">
                         <div className="product-categories-one__inner">
                             <ul>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img1.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Accessories</h6>
-                                        </a> </div>
-                                </li>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img2.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Furnitures</h6>
-                                        </a> </div>
-                                </li>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img3.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Jewellery</h6>
-                                        </a> </div>
-                                </li>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img4.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Shoes</h6>
-                                        </a> </div>
-                                </li>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img5.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Electronics</h6>
-                                        </a> </div>
-                                </li>
-                                <li> <a href="#0" className="img-box">
-                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img6.png"
-                                                alt="" /> </div>
-                                    </a>
-                                    <div className="title"> <a href="#0">
-                                            <h6>Fashion</h6>
-                                        </a> </div>
-                                </li>
+                                {
+                                    (filters.product_types.length > 5) ? (
+                                        filters.product_types.map((product_type,index) => (
+                                            (index < 6 ) && (<li key={product_type.id}> 
+                                                    <a href="#0" className="img-box">
+                                                        <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img2.png"
+                                                                alt="" /> </div>
+                                                    </a>
+                                                    <div className="title"> <a href="#0">
+                                                            <h6>{ product_type.name }</h6>
+                                                        </a> </div>
+                                                </li>
+                                            )
+                                        ))
+                                    ) : (
+                                        filters.product_types.map((product_type) => (
+                                            <li key={product_type.id}> 
+                                                <a href="#0" className="img-box">
+                                                    <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img2.png"
+                                                            alt="" /> </div>
+                                                </a>
+                                                <div className="title"> <a href="#0">
+                                                        <h6>{ product_type.name }</h6>
+                                                    </a> </div>
+                                            </li>
+                                        ))
+                                    )
+                                }
                             </ul>
                         </div>
                     </div>
@@ -121,7 +111,7 @@ export default function ProductIndex(){
                                         <div className="short-by">
                                             <div className="select-box"> <select className="wide">
                                                     <option data-display="Short by latest">Featured </option>
-                                                    <option value="1">Best selling </option>
+                                                    <option defaultValue={1}>Best selling </option>
                                                     <option value="2">Alphabetically, A-Z</option>
                                                     <option value="3">Alphabetically, Z-A</option>
                                                     <option value="3">Price, low to high</option>
@@ -157,17 +147,18 @@ export default function ProductIndex(){
                                         <div className="row">
                                             { products.map((product,index) => (
                                                 <div key={product.id} className="col-xl-4 col-lg-6 col-6 ">
-                                                    <div className="products-three-single w-100  mt-30">
-                                                        <div className="products-three-single-img"> <a
-                                                                href="shop-details-3.html" className="d-block"> <img
-                                                                    src="product.image_url"
+                                                    <div className="products-three-single w-100 mt-30">
+                                                        <div className="products-three-single-img" style={{ height: '300px' }}> <a
+                                                            href="shop-details-3.html" className="d-block"> 
+                                                                <img
+                                                                    src={product.image ?? ""}
                                                                     className="first-img" alt="" /> <img
-                                                                    src="/assets/images/home-three/productss2-hover-1.png"
+                                                                    src={ProductHoverImage}
                                                                     alt="" className="hover-img" />
                                                             </a>
                                                             <div className="products-grid-one__badge-box"> <span
                                                                     className="bg_base badge new ">New</span>
-                                                            </div> <a click="addToCart(product,1)" className="addcart btn--primary style2">
+                                                            </div> <a onClick={(e) => {e.preventDefault()}} className="addcart btn--primary style2">
                                                                 Add To Cart </a>
                                                             <div className="products-grid__usefull-links">
                                                                 <ul>
@@ -257,8 +248,9 @@ export default function ProductIndex(){
                                                                                     <div className="qtySelector text-center">
                                                                                         <span className="decreaseQty"><i
                                                                                                 className="flaticon-minus"></i>
-                                                                                        </span> <input type="number"
-                                                                                            className="qtyValue" value="1" />
+                                                                                        </span> 
+                                                                                        <input type="number"
+                                                                                            className="qtyValue" defaultValue={1}/>
                                                                                         <span className="increaseQty"> <i
                                                                                                 className="flaticon-plus"></i>
                                                                                         </span> </div>
@@ -283,12 +275,12 @@ export default function ProductIndex(){
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="products-three-single-content text-center"> <span>{ product.category || "UD"}</span>
+                                                        {/* <div className="products-three-single-content text-center"> <span>{ product.category?.title || "UD"}</span>
                                                             <h5>
                                                                 <router-link to="{name:'products.show',params:{id:product.id}}">{ product.name }</router-link >
                                                             </h5>
                                                             <p><del>$200.00</del> ${ product.price }</p>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </div>
                                             )) }
@@ -299,7 +291,7 @@ export default function ProductIndex(){
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="product-grid-two list mt-30 ">
-                                                    <div className="product-grid-two__img">
+                                                    <div className="product-grid-two__img" >
                                                         <a href="shop-details-2.html" className="d-block"> <img
                                                                 src="/assets/images/home-three/products-1.jpg"
                                                                 className="first-img" alt="" /> <img
@@ -396,7 +388,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -537,7 +529,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -681,7 +673,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -825,7 +817,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -969,7 +961,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1110,7 +1102,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1256,7 +1248,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1399,7 +1391,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1541,7 +1533,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1683,7 +1675,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1825,7 +1817,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -1967,7 +1959,7 @@ export default function ProductIndex(){
                                                                                     <span className="decreaseQty"><i
                                                                                             className="flaticon-minus"></i>
                                                                                     </span> <input type="number"
-                                                                                        className="qtyValue" value="1" />
+                                                                                        className="qtyValue" defaultValue={1} />
                                                                                     <span className="increaseQty"> <i
                                                                                             className="flaticon-plus"></i>
                                                                                     </span> </div> <button
@@ -2053,77 +2045,7 @@ export default function ProductIndex(){
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-3 col-lg-4">
-                        <div className="shop-grid-sidebar"> <button className="remove-sidebar d-lg-none d-block"> <i
-                                    className="flaticon-cross"> </i> </button>
-                            <div className="sidebar-holder">
-                                <form action="#0" className="footer-default__subscrib-form m-0 p-0 wow fadeInUp animated">
-                                    <div className="footer-input-box p-0 "> <input type="email" placeholder="Email address"
-                                            name="email"/> <button type="submit" className="subscribe_btn"> <i
-                                                className="flaticon-magnifying-glass"></i> </button> </div>
-                                </form>
-                                <div className="single-sidebar-box mt-30 wow fadeInUp animated ">
-                                    <h4>Select Categories</h4>
-                                    <div className="checkbox-item">
-                                        <form>
-                                            { filters.categories.map((category, index) => (
-                                                <div v-for="category in filterList.categories"
-                                            	className="form-group"> 
-                                                    <input id="`category-${category.id}`" v-model="categories" 
-                                                        value="category.id"
-                                                        type="checkbox"/> 
-                                                    <label for="`category-${category.id}`">
-                                                        { category.title }
-                                                    </label> 
-                                                </div>
-                                            )) }
-                                            
-                                        </form>
-                                    </div>
-                                </div>
-                                <div className="single-sidebar-box mt-30 wow fadeInUp animated">
-                                    <h4>Color Option </h4>
-                                    <ul className="color-option">
-                                        <li v-for="color in filterList.colors" id="`color-${color.id}`">
-                                        	<a click="addColor(color.id)"
-                                        		href="#0" className="color-option-single"
-                                        		// style="`background:${ color.title }`">
-                                                >
-                                        		<span>Color</span>
-                                                    {/* { color.title }</span>  */}
-                                        	</a> 
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="single-sidebar-box mt-30 wow fadeInUp animated">
-                                    <h4>Filter By Price</h4>
-                                    <div className="slider-box">
-                                        <div id="price-range" className="slider">
-                                        	
-                                        </div>
-                                        <div className="output-price">
-                                        	<label for="priceRange">Price:</label> 
-                                        	<input type="text" id="priceRange" readonly/> 
-                                        </div> 
-                                        <button click="filterProducts"
-                                        	className="filterbtn" type="submit"> Filter </button>
-                                    </div>
-                                </div>
-                                <div className="single-sidebar-box mt-30 wow fadeInUp animated pb-0 border-bottom-0">
-                                    <h4>Tags </h4>
-                                    <ul className="popular-tag">
-                                        { filters.tags.map((tag,index) => (
-                                            <li id="`tag-${tag.id}`">
-                                                <a href="`${tag.id}`" click="addTag(tag.id)">
-                                                    { tag.title }
-                                                </a>
-                                            </li>
-                                        )) }
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <FiltersSidebar filters={filters} currentFilters={currentFilters} applyFilters={applyFilters}/>
                 </div>
             </div>
         </div>
