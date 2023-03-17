@@ -1,5 +1,13 @@
+import { useEffect } from "react";
+import jQuery from "jquery";
+import { Link } from "react-router-dom";
+
 export default function App({children}){ 
   var cart_number= 0;
+
+  useEffect(function() {
+    jQuery(document).trigger('changed')
+  },[])
   return (
       <>
           <header className="header-style-3">
@@ -20,9 +28,10 @@ export default function App({children}){
                                                    <img src="/src/assets/images/logo/logo.png"
                                                       alt=""/> </a>
                                               <div className="cart-holder">
-                                                  <a href="#0" className="cart cart-icon position-relative">
-                                                      <i className="flaticon-shopping-cart"></i>
-                                                  </a>
+                                                    <Link to="/cart" className="cart cart-icon position-relative"
+                                                    >
+                                                        <i className="flaticon-shopping-cart"></i>
+                                                    </Link>
                                               </div>
                                           </div>
                                       </div>

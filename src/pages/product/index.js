@@ -6,10 +6,12 @@ import ProductHoverImage from "../../base/assets/images/inner-pages/product-hove
 import { getFilters, getProducts } from "../../redux/actions/productAction";
 import FiltersSidebar from "./FiltersSidebar";
 
+import '../../base/assets/fonts/flaticon.css'
+
 
 export default function ProductIndex(){
     const { products, loading, filters, currentFilters } = useSelector(state => {
-        console.log("Store",state)
+        //console.log("Store",state)
         return state.productReducer
     });
 

@@ -2,7 +2,7 @@ import { createBrowserRouter, Route, createRoutesFromElements } from "react-rout
 import App from "../App";
 import AuthLogin from "../pages/auth/Login";
 import AuthRegister from "../pages/auth/Register";
-import ProductIndex from "../pages/product/Index";
+import ProductIndex from "../pages/product/index"
 
 const AppRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -14,6 +14,7 @@ const AppRouter = createBrowserRouter(
       >
         
           <Route path='/' exact Component={ProductIndex} />
+          <Route path='/cart' Component={ProductIndex} />
           <Route path='/auth/login' Component={AuthLogin} />
           <Route path='/auth/register' Component={AuthRegister} />
 

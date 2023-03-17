@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export default axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://localhost:1000',
     timeout: 10000,
     withCredentials: true,
     //transformRequest: [(data) => JSON.stringify(data.data)],

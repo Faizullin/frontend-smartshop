@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './base/assets/js/main'
 import reportWebVitals from './reportWebVitals';
 
 
@@ -15,17 +16,6 @@ import axios from 'axios'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
-axios.post('http://localhost:8000/auth/token/', {}, {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-.then(response => {
-  // handle response
-})
-.catch(error => {
-  // handle error
-});
 root.render(
 
   <React.StrictMode>
