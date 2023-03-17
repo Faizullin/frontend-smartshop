@@ -848,13 +848,21 @@ jQuery(function ($) {
   
   
     /****====== Magnific popup_link  ======*******/
-    if ($(".popup_link").length) {
-      $(".popup_link").magnificPopup({
-        type: "inline",
-        midClick: true,
-        mainClass: "mfp-fade"
+    // if ($(".popup_link").length) {
+    //   $(".popup_link").magnificPopup({
+    //     type: "inline",
+    //     midClick: true,
+    //     mainClass: "mfp-fade"
+    //   });
+    // };
+    if($('#product-popup-el').length){
+      $('#product-popup-el').magnificPopup({
+        type: 'inline',
+        //mainClass: 'mfp-hide',
+        //removalDelay: 300
       });
-    };
+    }
+
   
     /****====== Magnific popup video ======*******/
     if ($(".video-popup").length) {

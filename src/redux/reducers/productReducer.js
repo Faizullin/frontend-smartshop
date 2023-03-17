@@ -1,8 +1,12 @@
-import { GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_FILTERS, PRODUCT_ERROR, SET_CURRENT_FILTERS } from "../actions/types";
+import { GET_POPUP_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_FILTERS, PRODUCT_ERROR, SET_CURRENT_FILTERS } from "../actions/types";
   
 const initialState = {
     products: [],
-    product: null,
+    product: {
+        image: '',
+        price: 0,
+        
+    },
     filters: {
         product_types: [],
         shops: [],
@@ -22,6 +26,8 @@ const productReducer = (state = initialState, actions) => {
         case GET_PRODUCTS:
             return { ...state, products: payload, loading: false,};
         case GET_PRODUCT:
+            return { ...state, product: payload, loading: false };
+        case GET_POPUP_PRODUCT:
             return { ...state, product: payload, loading: false };
         case PRODUCT_ERROR:
             console.log("Error in payload", payload)

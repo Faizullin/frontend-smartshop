@@ -1,5 +1,4 @@
 export default function FiltersSidebar({filters,applyFilters,currentFilters}){
-    console.log(currentFilters.shops)
     return (
         <div className="col-xl-3 col-lg-4">
             <div className="shop-grid-sidebar"> <button className="remove-sidebar d-lg-none d-block"> <i
@@ -46,7 +45,7 @@ export default function FiltersSidebar({filters,applyFilters,currentFilters}){
                         <h4>Shops ({filters.shops.length})</h4>
                         <ul className="popular-tag">
                             { filters.shops.map((shop,index) => (
-                                <li key={shop.id} id="`tag-${tag.id}`" className={`${ currentFilters.shops.some(el => {console.log(el,shop.id);return shop.id == el}) }`}>
+                                <li key={shop.id} id="`tag-${tag.id}`" className={`${ currentFilters.shops.some(el => {return shop.id == el}) }`}>
                                     <a onClick={(e) => {e.preventDefault();applyFilters({shops:[shop.id]})}}>
                                         { shop.name }
                                     </a>

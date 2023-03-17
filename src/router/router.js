@@ -1,8 +1,11 @@
 import { createBrowserRouter, Route, createRoutesFromElements } from "react-router-dom";
 import App from "../App";
+import About from "../pages/about/About";
 import AuthLogin from "../pages/auth/Login";
 import AuthRegister from "../pages/auth/Register";
-import ProductIndex from "../pages/product/index"
+import CartIndex from "../pages/cart/Index";
+import ProductIndex from "../pages/product/Index"
+import ProductShow from "../pages/product/Show";
 
 const AppRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -12,11 +15,15 @@ const AppRouter = createBrowserRouter(
         // action={rootAction}
         // errorElement={<ErrorPage />}
       >
-        
-          <Route path='/' exact Component={ProductIndex} />
-          <Route path='/cart' Component={ProductIndex} />
+          <Route exact path='/' Component={ProductIndex} />
+          
+          <Route exact path='/product' Component={ProductIndex} />
+          <Route path="/product/:id" Component={ProductShow} />
+          <Route path='/cart' Component={CartIndex} />
+          <Route path='/about' Component={About} />
           <Route path='/auth/login' Component={AuthLogin} />
           <Route path='/auth/register' Component={AuthRegister} />
+          
 
       </Route>
   )

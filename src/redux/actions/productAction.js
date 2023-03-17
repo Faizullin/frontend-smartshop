@@ -1,5 +1,5 @@
 import axios from '../../api/axios';
-import { GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_FILTERS, PRODUCT_ERROR, PURCHASE_ERROR, PURCHASE_PRODUCT, SET_CURRENT_FILTERS } from "./types";
+import { GET_POPUP_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_FILTERS, PRODUCT_ERROR, PURCHASE_ERROR, PURCHASE_PRODUCT, SET_CURRENT_FILTERS } from "./types";
 //import { setAlert } from "./alert";
 
 export const getProducts = (filters = {}) => async dispatch => {
@@ -24,6 +24,19 @@ export const getProduct = postId => async dispatch => {
     const res = await axios.get(`/api/products/${postId}`);
 
     dispatch({ type: GET_PRODUCT, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: PRODUCT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const getPopupProduct = postId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/products/${postId}`);
+
+    dispatch({ type: GET_POPUP_PRODUCT, payload: res.data });
   } catch (err) {
     dispatch({
       type: PRODUCT_ERROR,
