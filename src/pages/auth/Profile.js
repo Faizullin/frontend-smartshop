@@ -3,31 +3,17 @@ import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.pn
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
+import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
 
 export default function AuthProfile() {
     return (
         <Layout>
             <main className="overflow-hidden ">
-                <section className="breadcrumb-area" style={{backgroundImage: `url(${BreadCumBgImage})`}}>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                <div className="breadcrumb-content text-center wow fadeInUp animated">
-                                    <h2>My Account </h2>
-                                    <div className="breadcrumb-menu">
-                                        <ul>
-                                            <li>
-                                                <Link to="/"><i className="flaticon-home pe-2"></i>Home</Link>
-                                            </li>
-                                            <li> <i className="flaticon-next"></i> </li>
-                                            <li className="active">My Account</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <Breadcrumbs title="My Account">
+                    <BreadcrumbsLink active={true}>
+                        My Account
+                    </BreadcrumbsLink>
+                </Breadcrumbs>
                 <section className="my-account-page pt-120 pb-120">
                     <div className="container">
                         <div v-if="isAuthenticated"

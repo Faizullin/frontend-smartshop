@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/authAction";
 import { authActions } from "../../redux/reducers/authReducer";
 import Layout from "../../components/layouts/Layout";
+import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
+import ValidationErrorMessage from "../../components/auth/ValidationError";
+import axios from "../../api/axios";
 
 
 
 
 export default function AuthLogin(){
-    const [message,setMessage] = useState('');
     const [errors,setErrors] = useState({
         'email': [],
         'password':[],
@@ -27,17 +28,14 @@ export default function AuthLogin(){
 
 
 
-    const handleChange = (e) => {
-        setData(data => ({
-            ...data,
-            [e.target.name]: e.target.value,
-        }))
-    }
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const error = useSelector(state => state.auth.error);
+    const handleChange = (e) => setData(data => ({ ...data,  [e.target.name]: e.target.value, }));
+    const { isAuthenticated, error } = useSelector(state => state.authReducer);
 
     useEffect(() => {
         if (isAuthenticated) {
+            axios.get("/api/protected").catch(e => {
+                dispatch(updateTokens())
+            })
             console.log("Redirect to dashboard")
         } else {
             console.log("Not auth")
@@ -46,30 +44,15 @@ export default function AuthLogin(){
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(login(data['email'], data['password']));
+        dispatch(login(data));
     };
 
     return (
         <Layout>
             <main className="overflow-hidden ">
-                <section className="breadcrumb-area" style={{backgroundImage: `url(${BreadCumBgImage})`}}>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                <div className="breadcrumb-content text-center wow fadeInUp animated">
-                                    <h2>Login</h2>
-                                    <div className="breadcrumb-menu">
-                                        <ul>
-                                            <li><router-link to="{name'home'}"><i className="flaticon-home pe-2"></i>Home</router-link></li>
-                                            <li> <i className="flaticon-next"></i> </li>
-                                            <li className="active">Login</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <Breadcrumbs>
+                    <BreadcrumbsLink active={true}>Register</BreadcrumbsLink>
+                </Breadcrumbs>
                 <section className="login-page pt-120 pb-120 wow fadeInUp animated">
                     <div className="container">
                         <div className="row justify-content-center">
@@ -80,7 +63,7 @@ export default function AuthLogin(){
                                         <p>Don't have an account yet? <Link to={`/auth/register`}>Sign up for free</Link></p>
                                     </div>
                                     <form className="common-form" onSubmit={handleSubmit}>
-                                        {error && (<div className="invalid-feedback"><strong><p>{error}</p></strong></div>) }
+                                        <ValidationErrorMessage error={error} />
                                         <div className="form-group">
                                             <input type="text" className="form-control" placeholder="Your User Name (Or) Email Address" autoComplete="email"
                                                 name="email" value={ data['email'] } onChange={handleChange}/> 

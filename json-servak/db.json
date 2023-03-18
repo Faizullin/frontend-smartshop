@@ -1,47 +1,51 @@
 {
-    "products": [
-        {
-            "id": 1,
-            "name": "Product 1",
-            "shop": 1,
-    
-            "owner": {
-                "id": 1,
-                "name": "User 1"
-            }
-        },
-        {
-            "id": 2,
-            "name": "Product 2",
-            "shop": 2,
-
-            "owner": {
-                "id": 1,
-                "name": "User 2"
-            }
-        }
-    ],
-    "filters":{
-        "shops": [
-            {
-                "id": 1,
-                "name": "Shop 1",
-                "address": "shop-1-addres",
-                "owner": {
-                    "id": 1,
-                    "name": "User 1"
-                }
-            },
-            {
-                "id": 2,
-                "name": "Shop 2",
-                "address": "shop-2-addres",
-                "owner": {
-                    "id": 2,
-                    "name": "User 2"
-                }
-            }
-        ],
-        "product_types": []
+  "users": [
+    {
+      "email": "admin@example.com",
+      "password": "$2b$10$MvltsnWiuqGIgiAf0F6txOxwlew8QRz59SQAh8E9ATaiK.6r15Lxm"
     }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "shop": 1,
+      "owner": {
+        "id": 1,
+        "name": "User 1"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "shop": 2,
+      "owner": {
+        "id": 1,
+        "name": "User 2"
+      }
+    }
+  ],
+  "filters": {
+    "shops": [
+      {
+        "id": 1,
+        "name": "Shop 1",
+        "address": "shop-1-addres",
+        "owner": {
+          "id": 1,
+          "name": "User 1"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Shop 2",
+        "address": "shop-2-addres",
+        "owner": {
+          "id": 2,
+          "name": "User 2"
+        }
+      }
+    ],
+    "product_types": []
+  }
 }

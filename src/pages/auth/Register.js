@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import BreadCrumbIMage from "../../base/assets/images/inner-pages/breadcum-bg.png"
+import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import Layout from "../../components/layouts/Layout";
+import { register } from "../../redux/actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
+import ValidationErrorMessage from "../../components/auth/ValidationError";
 
 export default function AuthRegister(){
     const [message,setMessage] = useState('');
@@ -18,62 +21,32 @@ export default function AuthRegister(){
         'password_confirmation': '',
     })
 
-    const handleChange = (e) => {
 
-        setData(data => ({
-            ...data,
-            [e.target.name]: e.target.value,
-        }))
-    }
+    const dispatch = useDispatch();
+
+    const {error, loading} = useSelector(state => state.authReducer)
+
+    const handleChange = (e) => setData(data => ({...data, [e.target.name]: e.target.value, }))
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // setMessage('')
-        // setErrors({})
-        // setIsLoading(true)
-        
-        // registerUser({
-        //     ...data
-        // }).then((response)=>{
-        //     console.log("Response",response)
-        // }).catch(error=>{
-        //     console.log("Error",error)
-
-        //     if(error.response && error.response.data && !error.response.data.status){
-        //         this.errors = error.response.data.errors || {};
-        //         this.message = error.response.data.message || null;
-        //         setErrors(errors => ({
-        //             ...error.response.data.errors,
-        //         }))
-        //         setMessage(message => error.response.data.message)
-        //     }
-        // }).finally(()=>{
-        //     setIsLoading(false)
-        // });
+        dispatch(register({...data}));
     }
+    useEffect(() => {
+        console.log("EEOR to",error,error && (<div className="invalid-feedback"><strong><p>{ error.message }</p></strong></div>))
+        if(error){
+            setMessage(error.message)
+        }
+    }, [error])
+
 
 
     return (
         <Layout>
             <main className="overflow-hidden ">
-                <section className="breadcrumb-area" style={{backgroundImage: BreadCrumbIMage}}>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                <div className="breadcrumb-content text-center wow fadeInUp animated">
-                                    <h2>Register</h2>
-                                    <div className="breadcrumb-menu">
-                                        <ul>
-                                            <li><router-link to="{name'home'}"><i className="flaticon-home pe-2"></i>Home</router-link></li>
-                                            <li> <i className="flaticon-next"></i> </li>
-                                            <li className="active">Register</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <Breadcrumbs title="Register">
+                    <BreadcrumbsLink active={true}>Register</BreadcrumbsLink>
+                </Breadcrumbs>
                 <section className="login-page pt-120 pb-120 wow fadeInUp animated">
                     <div className="container">
                         <div className="row justify-content-center">
@@ -84,13 +57,11 @@ export default function AuthRegister(){
                                         <p>Already have an account? <Link to="/auth/login">Log in</Link></p>
                                     </div>
                                     <form className="common-form" onSubmit={handleSubmit}>
-                                        <div v-if="message" className="invalid-feedback">
-                                            <strong>{ message }</strong>
-                                        </div>
+                                        <ValidationErrorMessage error={error} />
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Your User Name (Or) Email Address" autoComplete="email"
+                                            <input type="text" className="form-control" placeholder="Your Email Address" autoComplete="email"
                                                 name="email" value={ data['email'] } onChange={handleChange}/> 
-                                            <div v-if='errors.email' className="invalid-feedback">
+                                            <div v-if='errors.email' className="invalid-feedback ">
                                                 <strong>{ errors.email[0] }</strong>
                                             </div>
                                         </div>
@@ -121,8 +92,8 @@ export default function AuthRegister(){
                                                 <input type="checkbox" id="remember"/>
                                                 <label className="p-0" htmlFor="remember"> Remember Me</label>
                                             </div>
-                                            <router-link to="{name'auth.forgotPassword'}" 
-                                                className="forgot"> Forgot Password?</router-link>
+                                            <Link to="#" 
+                                                className="forgot"> Forgot Password?</Link>
                                         </div>
                                         <button disabled={isLoading} type="submit" className="btn--primary style2">Register </button>
                                     </form>

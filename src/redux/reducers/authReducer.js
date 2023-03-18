@@ -1,6 +1,6 @@
 // import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from "../actions/types";
 
-import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS } from "../actions/types";
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS } from "../actions/types";
 
 // const initialState = {
 //     isAuthenticated: false,
@@ -44,10 +44,15 @@ import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS } from "../actions/types";
 //   };
   
 //   export default authReducer;
+
+
+const accessToken = localStorage.getItem('accessToken');
+const refreshToken = localStorage.getItem('refreshToken');
+console.log("Initial tokens",{accessToken,refreshToken})
 const initialState = {
-    accessToken: null,
-    refreshToken: null,
-    isAuthenticated: false,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    isAuthenticated: accessToken ? true : false,
     error: null,
   };
   
@@ -69,7 +74,7 @@ const authReducer = (state = initialState, action) => {
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,
-        error: action.payload.error,
+        error: action.payload,
       };
     case LOGOUT_SUCCESS:
       return {
@@ -78,6 +83,22 @@ const authReducer = (state = initialState, action) => {
         refreshToken: null,
         isAuthenticated: false,
         error: null,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
+        isAuthenticated: true,
+        error: null,
+      }
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
+        error: action.payload,
       };
     default:
       return state;

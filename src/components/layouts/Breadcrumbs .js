@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
 
-export default function Breadcrumbs({children}) {
+export default function Breadcrumbs({children, title}) {
     return (
         <section className="breadcrumb-area" style={{backgroundImage: `url(${BreadCumBgImage})`}}>
             <div className="container">
                 <div className="row">
                     <div className="col-xl-12">
                         <div className="breadcrumb-content pb-60 text-center wow fadeInUp animated">
-                            <h2>Shop Grid</h2>
+                            <h2>{ title }</h2>
                             <div className="breadcrumb-menu">
                                 <ul>
                                     <li>
