@@ -2,11 +2,11 @@ import { createBrowserRouter, Route, createRoutesFromElements } from "react-rout
 import ProtectedRoute from "./ProtectedRoute"
 import About from "../pages/about/About";
 import AuthLogin from "../pages/auth/Login";
-import AuthProfile from "../pages/auth/Profile";
 import AuthRegister from "../pages/auth/Register";
 import CartIndex from "../pages/cart/Index";
 import ProductIndex from "../pages/product/Index"
 import ProductShow from "../pages/product/Show";
+import AuthDashboard from "../pages/auth/dashboard/Index";
 
 const AppRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -26,10 +26,10 @@ const AppRouter = createBrowserRouter(
           <Route path='/auth/register' Component={AuthRegister} />
           {/* <ProtectedRoute path='/dashboard' Component={AuthProfile} /> */}
           <Route
-            path="/profile"
+            path="/dashboard"
             element={
               <ProtectedRoute>
-                <AuthProfile />
+                <AuthDashboard />
               </ProtectedRoute>
             }
           />

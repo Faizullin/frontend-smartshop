@@ -28,8 +28,8 @@ server.post('/api/token', (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
-  const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
+  const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '5m' });
+  const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '7m' });
 
   res.json({ accessToken, refreshToken });
 });

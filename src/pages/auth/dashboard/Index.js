@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
-import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
-import { Link, useNavigate } from "react-router-dom";
-import Layout from "../../components/layouts/Layout";
-import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
-import authApi from "../../api/authApi";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchRequest } from "../../redux/actions/authAction";
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Route, Router, Switch, useLocation, useNavigate } from 'react-router-dom';
+import authApi from '../../../api/authApi';
+import Breadcrumbs, { BreadcrumbsLink } from '../../../components/layouts/Breadcrumbs ';
+import Layout from '../../../components/layouts/Layout';
+import { fetchRequest } from '../../../redux/actions/authAction';
+// import LoadingIndicator from '../LoadingIndicator';
+import OrdersTable from './OrdersTable';
+import Profile from './Profile';
 
-export default function AuthProfile() {
+function AuthDashboard() {
     const [user, setUser] = useState({
-        name: 'user 1',
-        id: 1,
-        email: 'user@..ru',
-        age: '18',
+        name:'',
+        email:'',
+        
     })
+    const location = useLocation()
     const dispatch = useDispatch()
     const { loading } = useSelector(state => state.authReducer)
     useEffect(() => {
@@ -23,17 +24,52 @@ export default function AuthProfile() {
             dispatch(fetchRequest({
                 loading: false
             }));
-            setUser(e.data )
+            setUser(e.data)
         })
     }, [])
-    useEffect(() => {
-        console.log("Loading chnge",loading)
-    },[loading])
 
     if(loading){
         return <div>Loading...</div>
     }
-    return (
+//   const [profile, setProfile] = useState(null);
+//   const [orders, setOrders] = useState([]);
+
+//   useEffect(() => {
+//     async function fetchData() {
+//       try {
+//         const [profileData, ordersData] = await Promise.all([
+//           getProfile(),
+//           getOrders(),
+//         ]);
+//         setProfile(profileData);
+//         setOrders(ordersData);
+//       } catch (error) {
+//         console.error(error);
+//         logout();
+//         history.push('/login');
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+//     fetchData();
+//   }, [history]);
+
+    const tabs = [
+        {
+        title: 'Profile',
+        path: '/dashboard/profile',
+        component: <Profile user={user} />,
+        },
+        {
+        title: 'Orders',
+            path: '/dashboard/orders',
+            component: <OrdersTable/>,
+        },
+    ];
+
+  return (
+          
+
         <Layout>
             <main className="overflow-hidden ">
                 <Breadcrumbs title="My Account">
@@ -49,6 +85,16 @@ export default function AuthProfile() {
                                 <div className="d-flex align-items-start">
                                     <div className="nav my-account-page__menu flex-column nav-pills me-3" id="v-pills-tab"
                                         role="tablist" aria-orientation="vertical">
+                                        { tabs.map((tab) => (
+                                            <li key={tab.path} className="nav-item">
+                                                <Link
+                                                className={`nav-link ${location.pathname === tab.path ? 'active' : ''}`}
+                                                to={tab.path}
+                                                >
+                                                {tab.title}
+                                                </Link>
+                                            </li>
+                                        ))}
                                         <button className="nav-link active" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">
                                             <span> Dashboard</span>
                                         </button>
@@ -72,6 +118,13 @@ export default function AuthProfile() {
                             </div>
                             <div className="col-lg-7">
                                 <div className="tab-content " id="v-pills-tabContent">
+                                     <Router>
+                                    {tabs.map((tab) => (
+                                    <Route key={tab.path} path={tab.path}>
+                                        {tab.component}
+                                    </Route>
+                                    ))}
+                                    </Router>
                                     <div className="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel"
                                         aria-labelledby="v-pills-dashboard-tab">
                                         <div className="tabs-content__single">
@@ -116,6 +169,7 @@ export default function AuthProfile() {
                                                         <th>Payment status</th>
                                                     </thead>
                                                     <tbody>
+                                                        
                                                         {/* <tr v-for="userOrder in user.orders">
                                                             <th>{{ userOrder.id }}</th>
                                                             <td>{{ userOrder.total_price }}</td>
@@ -158,43 +212,7 @@ export default function AuthProfile() {
                 </section>
             </main>
         </Layout>
-    )
+  );
 }
-{/* <script>
-    import AuthService from '@/services/AuthService'
 
-    export default {
-        name: "MyAccount",
-        mounted(){
-            this.getUserData();
-        },
-        data() {
-            return {
-                user:{
-
-                },
-                isLoading:false,
-                isAuthenticated:false,
-            };
-        },
-        methods: {
-            getUserData() {
-                this.isLoading = true;
-                AuthService.getUserProfile().then((response)=>{
-                    if(this.$store.getters.isAuthenticated){
-                        this.user = response.data.user;
-                        this.isAuthenticated = true;
-                    }
-                }).catch((error)=>{
-                    this.$router.push({name:'auth.login',query:{redirect:window.location()}});
-                }).finally(()=>{
-                    this.isLoading = false;
-                    $(document).trigger('changed');
-                });
-            },
-            logout(){
-                this.$store.dispatch('logout');
-            },
-        },
-    };
-</script> */}
+export default AuthDashboard;
