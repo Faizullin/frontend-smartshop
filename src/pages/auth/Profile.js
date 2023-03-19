@@ -1,11 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCumBgImage from "../../base/assets/images/inner-pages/breadcum-bg.png"
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
 import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
+import authApi from "../../api/authApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRequest } from "../../redux/actions/authAction";
 
 export default function AuthProfile() {
+    const [user, setUser] = useState({
+        name: 'user 1',
+        id: 1,
+        email: 'user@..ru',
+        age: '18',
+    })
+    const dispatch = useDispatch()
+    const { loading } = useSelector(state => state.authReducer)
+    useEffect(() => {
+        dispatch(fetchRequest({loading:true}));
+        authApi.get('/api/user').then(e => {
+            dispatch(fetchRequest({
+                loading: false
+            }));
+            setUser(e.data )
+        })
+    }, [])
+    useEffect(() => {
+        console.log("Loading chnge",loading)
+    },[loading])
+
+    if(loading){
+        return <div>Loading...</div>
+    }
     return (
         <Layout>
             <main className="overflow-hidden ">

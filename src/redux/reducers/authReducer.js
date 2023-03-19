@@ -1,6 +1,6 @@
 // import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from "../actions/types";
 
-import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS } from "../actions/types";
+import { FETCH_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS, UPDATE_TOKENS_FAILURE, UPDATE_TOKENS_SUCCESS } from "../actions/types";
 
 // const initialState = {
 //     isAuthenticated: false,
@@ -54,6 +54,8 @@ const initialState = {
     refreshToken: refreshToken,
     isAuthenticated: accessToken ? true : false,
     error: null,
+    user: null,
+    loading: false,
   };
   
   
@@ -67,6 +69,8 @@ const authReducer = (state = initialState, action) => {
         refreshToken: action.payload.refreshToken,
         isAuthenticated: true,
         error: null,
+        user: action.payload.user,
+        loading: false
       };
     case LOGIN_FAILURE:
       return {
@@ -75,6 +79,8 @@ const authReducer = (state = initialState, action) => {
         refreshToken: null,
         isAuthenticated: false,
         error: action.payload,
+        user: null,
+        loading: false
       };
     case LOGOUT_SUCCESS:
       return {
@@ -83,6 +89,7 @@ const authReducer = (state = initialState, action) => {
         refreshToken: null,
         isAuthenticated: false,
         error: null,
+        user: null,
       };
     case REGISTER_SUCCESS:
       return {
@@ -91,15 +98,31 @@ const authReducer = (state = initialState, action) => {
         refreshToken: action.payload.refreshToken,
         isAuthenticated: true,
         error: null,
+        user: action.payload.user,
+        loading: false
       }
-    case REGISTER_FAILURE:
+    case UPDATE_TOKENS_SUCCESS:
+        return {
+          ...state,
+          accessToken: action.payload.accessToken,
+          refreshToken: action.payload.refreshToken,
+          isAuthenticated: true,
+          error: action.payload,
+          user: null,
+          loading: false
+        };
+    case UPDATE_TOKENS_FAILURE:
       return {
         ...state,
         accessToken: null,
         refreshToken: null,
         isAuthenticated: false,
         error: action.payload,
+        user: null,
+        loading: false
       };
+    case FETCH_REQUEST:
+      return { ...state, loading: action.payload.loading , error: null };
     default:
       return state;
   }

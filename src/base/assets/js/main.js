@@ -968,6 +968,7 @@ jQuery(function ($) {
     if ($(".eye .icon-2").length) {
       $(".eye .icon-2").click(function () {
         var x = $(this).siblings('input');
+        console.log(x,x.attr('type'))
         if (x.attr('type') === "password") {
           x.attr('type','text');
         } else if (x.attr('type') === "text"){
@@ -981,6 +982,7 @@ jQuery(function ($) {
     if ($(".eye .icon-1").length) {
       $(".eye .icon-1").click(function () {
         var x = $(this).siblings('input');
+        console.log(x,x.attr('type'))
         if (x.attr('type') === "password") {
           x.attr('type','text');
         } else if (x.attr('type') === "text"){

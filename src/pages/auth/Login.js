@@ -7,7 +7,6 @@ import { authActions } from "../../redux/reducers/authReducer";
 import Layout from "../../components/layouts/Layout";
 import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
 import ValidationErrorMessage from "../../components/auth/ValidationError";
-import axios from "../../api/axios";
 
 
 
@@ -24,6 +23,7 @@ export default function AuthLogin(){
     })
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
 
@@ -31,20 +31,11 @@ export default function AuthLogin(){
     const handleChange = (e) => setData(data => ({ ...data,  [e.target.name]: e.target.value, }));
     const { isAuthenticated, error } = useSelector(state => state.authReducer);
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            axios.get("/api/protected").catch(e => {
-                dispatch(updateTokens())
-            })
-            console.log("Redirect to dashboard")
-        } else {
-            console.log("Not auth")
-        }
-    }, [isAuthenticated]);
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        dispatch(login(data));
+        dispatch(login(data)).then((s) => {
+            navigate("/profile");
+        });
     };
 
     return (

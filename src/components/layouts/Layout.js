@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import jQuery from "jquery";
 import { Link } from "react-router-dom";
 
 export default function Layout({children}){ 
-  var cart_number= 0;
+    var cart_number= 0;
+    const dataFetchedRef = useRef(false);
 
-  useEffect(function() {
-    jQuery(document).trigger('changed')
-  },[])
+    useEffect(() => {
+        if (dataFetchedRef.current) return;
+        dataFetchedRef.current = true;
+        console.log('Triggering jquery');
+        jQuery(document).trigger('changed')
+    },[])
   return (
       <>
           <header className="header-style-3">

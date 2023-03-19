@@ -8,6 +8,10 @@ export const GET_PROFILE = "GET_PROFILE";
 export const USER_LOADED = "USER_LOADED";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const PROFILE_ERROR = "PROFILE_ERROR";
+export const UPDATE_TOKENS_SUCCESS = "PROFILE_ERROR";
+export const UPDATE_TOKENS_FAILURE = "PROFILE_ERROR";
+export const FETCH_REQUEST = "FETCH_REQUEST";
+
 
 export const SET_ALERT = "SET_ALERT";
 export const REMOVE_ALERT = "REMOVE_ALERT";
@@ -26,3 +30,4 @@ export const GET_PURCHASE = "GET_PURCHASE"
 export const GET_PURCHASES = "GET_PURCHASES"
 
 export const SET_CURRENT_FILTERS = "SET_CURRENT_FILTERS"
+

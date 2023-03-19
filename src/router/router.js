@@ -1,7 +1,8 @@
 import { createBrowserRouter, Route, createRoutesFromElements } from "react-router-dom";
-import App from "../App";
+import ProtectedRoute from "./ProtectedRoute"
 import About from "../pages/about/About";
 import AuthLogin from "../pages/auth/Login";
+import AuthProfile from "../pages/auth/Profile";
 import AuthRegister from "../pages/auth/Register";
 import CartIndex from "../pages/cart/Index";
 import ProductIndex from "../pages/product/Index"
@@ -23,7 +24,15 @@ const AppRouter = createBrowserRouter(
           <Route path='/about' Component={About} />
           <Route path='/auth/login' Component={AuthLogin} />
           <Route path='/auth/register' Component={AuthRegister} />
-          
+          {/* <ProtectedRoute path='/dashboard' Component={AuthProfile} /> */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <AuthProfile />
+              </ProtectedRoute>
+            }
+          />
 
       </Route>
   )

@@ -66,17 +66,18 @@ const authorize = (req, res, next) => {
   }
 
   try {
+   
     const decoded = jwt.verify(token, SECRET_KEY);
     req.user = router.db.get('users').find({ id: decoded.sub }).value();
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Invalid access token' });
+    res.status(401).json({ message: error });
   }
 };
 
 // Protected endpoint that requires authorization
-server.get('/api/protected', authorize, (req, res) => {
-  res.json({ message: `Hello ${req.user.username}! This is a protected endpoint.` });
+server.get('/api/user', authorize, (req, res) => {
+  res.json(req.user);
 });
 
 server.post('/api/register', (req, res) => {

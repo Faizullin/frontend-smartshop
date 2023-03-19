@@ -5,7 +5,7 @@ if(window.baseApiUrl)
   baseUrl = window.baseApiUrl
 export default axios.create({
     baseURL: baseUrl,
-    timeout: 10000,
+    //timeout: 10000,
     withCredentials: true,
     //transformRequest: [(data) => JSON.stringify(data.data)],
     headers: {
