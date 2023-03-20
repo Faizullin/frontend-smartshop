@@ -93,7 +93,7 @@ export default function CartIndex() {
 
     const handleSubmitOrder = (e) => {
         e.preventDefault();
-        dispatch(purchaseProduct({...formData}))
+        dispatch(purchaseProduct({user:{...formData},products:[...cartProducts]}))
         // this.orderForm.isLoading=true;
         // this.message=null;
         // this.errors={};

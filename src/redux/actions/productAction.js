@@ -1,3 +1,4 @@
+import authApi from '../../api/authApi';
 import axios from '../../api/axios';
 import { GET_POPUP_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_FILTERS, PRODUCT_ERROR, PURCHASE_ERROR, PURCHASE_PRODUCT, SET_CURRENT_FILTERS } from "./types";
 //import { setAlert } from "./alert";
@@ -63,7 +64,7 @@ export const purchaseProduct = formData => async dispatch => {
     headers: { "Content-Type": "application/json" }
   };
   try {
-    const res = await axios.post("/api/purchase", formData, config);
+    const res = await authApi.post("/api/purchase/order", formData, config);
 
     dispatch({ type: PURCHASE_PRODUCT, payload: res.data });
     //dispatch(setAlert("Post Added", "success"));
