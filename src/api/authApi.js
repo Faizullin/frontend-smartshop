@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout, updateTokens } from "../redux/actions/authAction";
 import store from "../redux/store";
 
-var baseUrl = 'http://localhost:1000'
+var baseUrl = 'http://rfid-kassa.com'
 if(window.baseApiUrl){ 
     baseUrl = window.baseApiUrl
 }
