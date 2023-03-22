@@ -9612,7 +9612,8 @@ pagination start
   position: relative;
   display: block;
   background: #f4f4f4;
-  padding: 35px 40px 30px;
+  padding: 35px 40px 30px 40px;
+  padding-left: 40px !important;
   max-width: 270px;
   width: 100%;
 }

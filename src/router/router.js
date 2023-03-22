@@ -17,16 +17,14 @@ const AppRouter = createBrowserRouter(
         // errorElement={<ErrorPage />}
       >
           <Route exact path='/' Component={ProductIndex} />
-          
           <Route exact path='/product' Component={ProductIndex} />
           <Route path="/product/:id" Component={ProductShow} />
           <Route path='/cart' Component={CartIndex} />
           <Route path='/about' Component={About} />
           <Route path='/auth/login' Component={AuthLogin} />
           <Route path='/auth/register' Component={AuthRegister} />
-          {/* <ProtectedRoute path='/dashboard' Component={AuthProfile} /> */}
           <Route
-            path="/dashboard"
+            path="/profile"
             element={
               <ProtectedRoute>
                 <AuthDashboard />

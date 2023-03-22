@@ -1,5 +1,6 @@
 import jQuery from "jquery";
 import 'jquery-ui/ui/widgets/tabs';
+import 'jquery-ui/ui/widgets/slider';
 import 'slick-carousel';
 import 'magnific-popup';
 
@@ -349,32 +350,32 @@ jQuery(function ($) {
   
   
     /****======  testimonial-two__slider  ======*******/
-    if ($(".testimonial-two__slider").length) {
-      $(".testimonial-two__slider").not('.slick-initialized').slick({
-        dots: false,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        arrows: false,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        pauseOnHover: false,
-        responsive: [{
-            breakpoint: 992,
-            settings: {
-              slidesToShow: 2,
-            }
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 1,
-            }
-          }
-        ]
-      });
-    };
+    // if ($(".testimonial-two__slider").length) {
+    //   $(".testimonial-two__slider").not('.slick-initialized').slick({
+    //     dots: false,
+    //     infinite: true,
+    //     speed: 300,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //     arrows: false,
+    //     autoplay: true,
+    //     autoplaySpeed: 2000,
+    //     pauseOnHover: false,
+    //     responsive: [{
+    //         breakpoint: 992,
+    //         settings: {
+    //           slidesToShow: 2,
+    //         }
+    //       },
+    //       {
+    //         breakpoint: 768,
+    //         settings: {
+    //           slidesToShow: 1,
+    //         }
+    //       }
+    //     ]
+    //   });
+    // };
   
     /****======  product-two-slider-box  ======*******/
     if ($(".product-two-slider-box").length) {
@@ -1002,10 +1003,11 @@ jQuery(function ($) {
     //     max: 200000,
     //     values: [0, 200000],
     //     slide: function (event, ui) {
-    //       $("#priceRange").val("$" + ui.values[0] + " - $" + ui.values[1]);
+    //       console.log("Slide",ui.values)
+    //       //$("#priceRange").val("$" + ui.values[0] + " - $" + ui.values[1]);
     //     }
     //   });
-    //   $("#priceRange").val("$" + $("#price-range").slider("values", 0) + " - $" + $("#price-range").slider("values", 1));
+    //   //$("#priceRange").val("$" + $("#price-range").slider("values", 0) + " - $" + $("#price-range").slider("values", 1));
     // };
   
   

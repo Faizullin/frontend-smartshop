@@ -1,58 +1,13 @@
-// import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from "../actions/types";
-
 import { FETCH_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_SUCCESS, UPDATE_TOKENS_FAILURE, UPDATE_TOKENS_SUCCESS } from "../actions/types";
 
-// const initialState = {
-//     isAuthenticated: false,
-//     token: localStorage.getItem('token'),
-//     user: null,
-//     error: null,
-//   };
 
-//   const authReducer = (state = initialState, action) => {
-//     switch (action.type) {
-//       case LOGIN_SUCCESS:
-//         localStorage.setItem('token', action.payload.token);
-//         return {
-//           ...state,
-//           isAuthenticated: true,
-//           token: action.payload.token,
-//           user: action.payload.user,
-//           error: null,
-//         };
-//       case LOGIN_FAILURE:
-//         localStorage.removeItem('token');
-//         return {
-//           ...state,
-//           isAuthenticated: false,
-//           token: null,
-//           user: null,
-//           error: action.payload,
-//         };
-//       case LOGOUT_SUCCESS:
-//         localStorage.removeItem('token');
-//         return {
-//           ...state,
-//           isAuthenticated: false,
-//           token: null,
-//           user: null,
-//           error: null,
-//         };
-//       default:
-//         return state;
-//     }
-//   };
-  
-//   export default authReducer;
-
-
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = localStorage.getItem('refreshToken');
-console.log("Initial tokens",{accessToken,refreshToken})
+const access = localStorage.getItem('access');
+const refresh = localStorage.getItem('refresh');
+console.log("Initial tokens",{access,refresh})
 const initialState = {
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-    isAuthenticated: accessToken ? true : false,
+    access: access,
+    refresh: refresh,
+    isAuthenticated: access ? true : false,
     error: null,
     user: null,
     loading: false,
@@ -65,8 +20,8 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
+        access: action.payload.access,
+        refresh: action.payload.refresh,
         isAuthenticated: true,
         error: null,
         user: action.payload.user,
@@ -75,8 +30,8 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_FAILURE:
       return {
         ...state,
-        accessToken: null,
-        refreshToken: null,
+        access: null,
+        refresh: null,
         isAuthenticated: false,
         error: action.payload,
         user: null,
@@ -85,8 +40,8 @@ const authReducer = (state = initialState, action) => {
     case LOGOUT_SUCCESS:
       return {
         ...state,
-        accessToken: null,
-        refreshToken: null,
+        access: null,
+        refresh: null,
         isAuthenticated: false,
         error: null,
         user: null,
@@ -94,18 +49,28 @@ const authReducer = (state = initialState, action) => {
     case REGISTER_SUCCESS:
       return {
         ...state,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
+        access: action.payload.access,
+        refresh: action.payload.refresh,
         isAuthenticated: true,
         error: null,
         user: action.payload.user,
         loading: false
       }
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        access: null,
+        refresh: null,
+        isAuthenticated: false,
+        error: action.payload,
+        user: null,
+        loading: false
+      };
     case UPDATE_TOKENS_SUCCESS:
         return {
           ...state,
-          accessToken: action.payload.accessToken,
-          refreshToken: action.payload.refreshToken,
+          access: action.payload.access,
+          refresh: action.payload.refresh,
           isAuthenticated: true,
           error: action.payload,
           user: null,
@@ -114,8 +79,8 @@ const authReducer = (state = initialState, action) => {
     case UPDATE_TOKENS_FAILURE:
       return {
         ...state,
-        accessToken: null,
-        refreshToken: null,
+        access: null,
+        refresh: null,
         isAuthenticated: false,
         error: action.payload,
         user: null,

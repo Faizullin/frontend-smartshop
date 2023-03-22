@@ -48,7 +48,6 @@ export default function CartIndex() {
         var tmpCartProducts = cartProducts.filter(function(item){
             return item.id !== product.id;
         })
-        console.log(tmpCartProducts)
         setCartProducts(tmpCartProducts)
         updateCart(tmpCartProducts);
     }
@@ -94,41 +93,6 @@ export default function CartIndex() {
     const handleSubmitOrder = (e) => {
         e.preventDefault();
         dispatch(purchaseProduct({user:{...formData},products:[...cartProducts]}))
-        // this.orderForm.isLoading=true;
-        // this.message=null;
-        // this.errors={};
-        // axios.post(BASE_URL+'/api/orders',{
-        //     products:this.products,
-        //     name:this.user.name,
-        //     address:this.user.address,
-        //     email:this.user.email,
-        //     total_price:this.totalPrice,
-        // }).then((response)=>{
-        //     if(response.data.status){
-        //         if(response.data.order){
-        //             var ids = [];
-        //             for (var i = response.data.order.products.length - 1; i >= 0; i--) {
-        //                 ids.push(response.data.order.products[i].id)
-        //             }
-        //             this.products = this.products.filter(function(elem) {
-        //                 return !ids.includes(elem.id);
-        //             })
-        //             this.updateCart()
-        //         }
-        //         if(response.data.message){
-        //             alert(response.data.message)
-        //         }
-        //         this.user={}
-        //     }
-        // }).catch((error)=>{
-        //     if(error.response && error.response.data && !error.response.data.status) {
-        //         this.errors = error.response.data.errors || {};
-        //         this.message = error.response.data.message || null;
-        //     }
-        // }).finally((v)=>{
-        //     this.orderForm.isLoading=false;
-        //     $(document).trigger('changed');
-        // });
     }
 
     useEffect(() => {
@@ -140,7 +104,6 @@ export default function CartIndex() {
     const totalPrice = () => {
         var result = 0;
         cartProducts.forEach((product)=>{
-            console.log(product.price * product.qty)
             result += product.price * product.qty;
         });
         return result;
@@ -228,85 +191,38 @@ export default function CartIndex() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row w-25 mt-3">
-                        <form submit="storeOrder" onSubmit={handleSubmitOrder}>
-                            {/* { error && (<div className="invalid-feedback">
-                                <strong>{ error }</strong> 
-                            </div>) } */}
-                            <div className="form-group">
-                                <input type="text" placeholder="name" name="name"
-                                    value={formData.name}  onChange={handleChange}/>
-                                {/* <div v-if="errors.name" className="invalid-feedback">
-                                    <strong>{'{'}{'{'} errors.name[0] {'}'}{'}'}</strong>
-                                </div> */}
-                            </div>
-                            <div className="form-group">
-                                <input type="email" placeholder="email" name="email"
-                                    value={formData.email} onChange={handleChange}/>
-                                {/* <div v-if="errors.email" className="invalid-feedback">
-                                    <strong>{'{'}{'{'} errors.email[0] {'}'}{'}'}</strong>
-                                </div> */}
-                            </div>
-                            <div className="form-group">
-                                <input type="text" placeholder="address" name="address"
-                                    value={formData.address} onChange={handleChange}/>
-                                {/* <div v-if="errors.address" className="invalid-feedback">
-                                    <strong>{'{'}{'{'} errors.address[0] {'}'}{'}'}</strong>
-                                </div> */}
-                            </div>
-                            <div>
-                            <input disabled={false} type="submit" defaultValue="Order" className="btn btn-primary style2" />
-                            </div>
-                        </form>
-                        </div>
-                        <div className="row pt-120">
-                        <div className="col-xl-6 col-lg-7 wow fadeInUp animated">
-                            <div className="cart-total-box">
-                            <div className="inner-title">
-                                <h3>Cart Totals</h3>
-                            </div>
-                            </div>
-                        </div>
+                        <div className="row mt-3">
+                            <form onSubmit={handleSubmitOrder} className='col-12 col-sm-9 col-md-5'>
+                                {/* { error && (<div className="invalid-feedback">
+                                    <strong>{ error }</strong> 
+                                </div>) } */}
+                                <div className="form-group mb-2">
+                                    <input type="text" placeholder="name" name="name"
+                                        value={formData.name}  onChange={handleChange}/>
+                                    {/* <div v-if="errors.name" className="invalid-feedback">
+                                        <strong>{'{'}{'{'} errors.name[0] {'}'}{'}'}</strong>
+                                    </div> */}
+                                </div>
+                                <div className="form-group mb-2">
+                                    <input type="email" placeholder="email" name="email"
+                                        value={formData.email} onChange={handleChange}/>
+                                    {/* <div v-if="errors.email" className="invalid-feedback">
+                                        <strong>{'{'}{'{'} errors.email[0] {'}'}{'}'}</strong>
+                                    </div> */}
+                                </div>
+                                <div className="form-group mb-3">
+                                    <input type="text" placeholder="address" name="address"
+                                        value={formData.address} onChange={handleChange}/>
+                                    {/* <div v-if="errors.address" className="invalid-feedback">
+                                        <strong>{'{'}{'{'} errors.address[0] {'}'}{'}'}</strong>
+                                    </div> */}
+                                </div>
+                                <div className="d-flex justify-content-center">
+                                    <button disabled={false} type="submit" className="btn btn--primary style2 col-10">Order</button>
+                                </div>
+                            </form>
                         </div>
                         <div className="row mt--30">
-                        <div className="col-xl-6 col-lg-7 wow fadeInUp animated">
-                            <div className="cart-total-box mt-30">
-                            <div className="table-outer">
-                                <table className="cart-table2">
-                                <thead className="cart-header clearfix">
-                                    <tr>
-                                    <th colSpan={1} className="shipping-title">Shipping</th>
-                                    <th className="price">$2500.00</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                    <td className="shipping"> Shipping </td>
-                                    <td className="selact-box1">
-                                        <ul className="shop-select-option-box-1">
-                                        <li> <input type="checkbox" name="free_shipping" id="option_1" defaultChecked /> <label htmlFor="option_1"><span />Free
-                                            Shipping</label> </li>
-                                        <li> <input type="checkbox" name="flat_rate" id="option_2" /> <label htmlFor="option_2"><span />Flat Rate</label> </li>
-                                        <li> <input type="checkbox" name="local_pickup" id="option_3" />
-                                            <label htmlFor="option_3"><span />Local Pickup</label> </li>
-                                        </ul>
-                                        <div className="inner-text">
-                                        <p>Shipping options will be updated during checkout</p>
-                                        </div>
-                                        <h4>Calculate Shipping</h4>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>
-                                        <h4 className="total">Total</h4>
-                                    </td>
-                                    <td className="subtotal">$2500.00</td>
-                                    </tr>
-                                </tbody>
-                                </table>
-                            </div>
-                            </div>
-                        </div>
                         <div className="col-xl-6 col-lg-5 wow fadeInUp animated">
                             <div className="cart-check-out mt-30">
                             <h3>Check Out</h3>
@@ -316,7 +232,7 @@ export default function CartIndex() {
                                     <p>Subtotal</p>
                                 </div>
                                 <div className="right">
-                                    <p>$2500.00</p>
+                                    <p>${ totalPrice().toFixed(2) }</p>
                                 </div>
                                 </li>
                                 <li>
@@ -324,7 +240,7 @@ export default function CartIndex() {
                                     <p>Shipping</p>
                                 </div>
                                 <div className="right">
-                                    <p><span>Flat rate:</span> $50.00</p>
+                                    <p><span>Flat rate:</span> $0.00</p>
                                 </div>
                                 </li>
                                 <li>
@@ -332,7 +248,7 @@ export default function CartIndex() {
                                     <p>Total Price:</p>
                                 </div>
                                 <div className="right">
-                                    <p>$2550.00</p>
+                                    <p>${ totalPrice().toFixed(2) }</p>
                                 </div>
                                 </li>
                             </ul>

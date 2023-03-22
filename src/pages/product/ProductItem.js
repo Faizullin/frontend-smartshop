@@ -45,7 +45,7 @@ export default  function ProductItem({product, addToCart, openPopupPrroduct}) {
                     <h5>
                         <Link to={`/product/${product.id}`}>{ product.name }</Link>
                     </h5>
-                    <p><del>$200.00</del> ${ product.price }</p>
+                    <p><del>${ Number(product.price) + 5 }</del> ${ product.price }</p>
                 </div>
             </div>
         </div>

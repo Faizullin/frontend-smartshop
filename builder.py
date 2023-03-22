@@ -1,7 +1,7 @@
 import os,re
 os.sys
 
-input_path = ".\\build"
+input_path = "build"
 index_html_path = os.path.join(input_path,'index.html')
 def convert():
     static_path = 'static/'
@@ -32,9 +32,9 @@ def getPath(dirs):
     return t
 def movementBuild():
     static_path = getPath([input_path,'static'])
-    tmp = getPath( ['..','backend','backend','shop_app','templates','index.html'] )
+    tmp = getPath( ['..','backend','backend-smartshop','shop_app','templates','index.html'] )
     print(f'from {index_html_path} to {tmp}')
-    tmp = getPath(['..','backend','backend','static'])
+    tmp = getPath(['..','backend','backend-smartshop','static'])
     print(f'from {static_path} to { tmp }')
 
     #os.rename(index_html_path,getPath(['..','backend','backend','shop_app','templates','index.html']))

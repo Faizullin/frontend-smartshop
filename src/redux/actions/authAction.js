@@ -4,9 +4,9 @@ import jwtDecode from 'jwt-decode';
 import axios from '../../api/axios';
 //axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
-export const setUser = (accessToken) => {
-  if (accessToken) {
-    return jwtDecode(accessToken);
+export const setUser = (access) => {
+  if (access) {
+    return jwtDecode(access);
   }
   return null;
 }
@@ -16,13 +16,13 @@ export const login = (data) => async (dispatch) => {
     var bodyFormData = new FormData();
     const response = await authApi.post(`/api/token/`, data,{headers: 
         {'Content-Type': 'application/json','Access-Control-Allow-Credentials':true}});
-    var { accessToken, refreshToken } = response.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    var { access, refresh } = response.data;
+    localStorage.setItem('access', access);
+    localStorage.setItem('refresh', refresh);
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: { accessToken, refreshToken },
+      payload: { access, refresh },
     });
     
   } catch (error) {
@@ -56,23 +56,23 @@ export const logout = () => async (dispatch) => {
     dispatch({
       type: LOGOUT_SUCCESS,
     });
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateTokens = (refreshToken) => {
+export const updateTokens = (refresh) => {
   return async (dispatch) => {
     try {
       const response = await axios.post('/api/token/refresh/', {
-        refreshToken,
+        refresh,
       });
-      const { accessToken } = response.data;
+      const { access } = response.data;
       dispatch({
         type: UPDATE_TOKENS_SUCCESS,
-        payload: { accessToken },
+        payload: { access },
       });
       return authApi(response.config);
     } catch (error) {

@@ -9,8 +9,9 @@ export const getProducts = (filters = {}) => async dispatch => {
     dispatch({ type: GET_PRODUCTS, payload: res.data });
     console.log("api filters got",res.data.shop,res.data.type,res.data)
     dispatch({ type: SET_CURRENT_FILTERS, payload: {
-      shops: [res.data.shop],
-      product_types: [res.data.type],
+      shop: filters.shop || null,
+      type: filters.type || null,
+      search: filters.search || "",
     } });
   } catch (err) {
     dispatch({

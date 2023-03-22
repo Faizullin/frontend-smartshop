@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumbs, { BreadcrumbsLink } from "../../components/layouts/Breadcrumbs ";
 import LoginBgImage from '../../base/assets/images/inner-pages/login-bg.png'
 import Layout from "../../components/layouts/Layout";
@@ -23,6 +23,7 @@ export default function AuthRegister(){
 
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const {error, loading} = useSelector(state => state.authReducer)
 
@@ -30,7 +31,9 @@ export default function AuthRegister(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(register({...data}));
+        dispatch(register({...data})).then((s) => {
+            navigate("/profile");
+        });
     }
     useEffect(() => {
         console.log("EEOR to",error,error && (<div className="invalid-feedback"><strong><p>{ error.message }</p></strong></div>))

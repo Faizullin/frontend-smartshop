@@ -21,7 +21,6 @@ export default function ProductIndex(){
         dispatch(getFilters());
     }, [dispatch]);
     const applyFilters = (filters = null) => {
-        console.log(filters,currentFilters)
         dispatch(getProducts(filters ?? {}));
     }
 
@@ -91,13 +90,15 @@ export default function ProductIndex(){
                                             (filters.product_types.length > 5) ? (
                                                 filters.product_types.map((product_type,index) => (
                                                     (index < 6 ) && (<li key={product_type.id}> 
-                                                            <a href="#0" className="img-box">
+                                                            <a href="#0" className="img-box" onClick={(e) => {e.preventDefault();applyFilters({type:product_type.id})}}>
                                                                 <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img2.png"
                                                                         alt="" /> </div>
                                                             </a>
-                                                            <div className="title"> <a href="#0">
+                                                            <div className="title"> 
+                                                                <a onClick={ (e) => {e.preventDefault();applyFilters({type:product_type.id})} }>
                                                                     <h6>{ product_type.name }</h6>
-                                                                </a> </div>
+                                                                </a> 
+                                                            </div>
                                                         </li>
                                                     )
                                                 ))

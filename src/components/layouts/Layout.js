@@ -32,8 +32,7 @@ export default function Layout({children}){
                                                    <img src="/src/assets/images/logo/logo.png"
                                                       alt=""/> </a>
                                               <div className="cart-holder">
-                                                    <Link to="/cart" className="cart cart-icon position-relative"
-                                                    >
+                                                    <Link to="/cart" className="cart cart-icon position-relative">
                                                         <i className="flaticon-shopping-cart"></i>
                                                     </Link>
                                               </div>
@@ -304,13 +303,10 @@ export default function Layout({children}){
                                           <h4> Office</h4>
                                       </div>
                                       <div className="text1">
-                                          <p>29 Holles Place, Dublin 2 D02 YY46</p>
+                                          <p>+7 (777) 110 6777</p>
                                       </div>
                                       <div className="text2">
-                                          <p>68 Jay Street, Suite 902 New Side <br/> Brooklyn, NY 11201</p>
-                                      </div>
-                                      <div className="text3">
-                                          <p>New York, United States</p>
+                                          <p>Republic of Kazakhstan, Astana City</p>
                                       </div>
                                   </div>
                               </div>
@@ -373,26 +369,6 @@ export default function Layout({children}){
                                       </div>
                                   </div>
                               </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div className="footer_bottom position-relative">
-                  <div className="container">
-                      <div className="footer_bottom_content">
-                          <div className="copyright wow fadeInUp animated">
-                              <p>© 2022 <a href="index.html">Karte.</a> All Rights Reserved.</p>
-                          </div>
-                          <div className="footer-payment wow fadeInUp animated">
-                              <a href="#0"> 
-                                  <img src="/src/assets/images/home-four/method-1.jpg" alt="payment"/>
-                                  </a>
-                              <a href="#0"> 
-                                  <img src="/src/assets/images/home-four/method-2.jpg" alt="payment"/> </a>
-                              <a href="#0"> 
-                                  <img src="/src/assets/images/home-four/method-3.jpg" alt="payment"/> </a>
-                              <a href="#0"> 
-                                  <img src="/src/assets/images/home-four/method-4.jpg" alt="payment"/> </a>
                           </div>
                       </div>
                   </div>

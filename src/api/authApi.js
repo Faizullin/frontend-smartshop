@@ -22,7 +22,7 @@ let refresh = false;
 
 authApi.interceptors.request.use(
     config => {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem('access');
       if (token) {
         console.log("Set token",token)
         config.headers.Authorization = `Bearer ${token}`;
@@ -38,25 +38,27 @@ authApi.interceptors.response.use((response)=>{
     const originalRequest = error.config;
     const state = store.getState().authReducer
     // console.log("_retry" ,originalRequest._retry,originalRequest.url,(['/api/token/refresh','/api/token','/api/register'].includes(originalRequest.url)))
-    if(state.isAuthenticated) {
+    if(error.response.status === 401){
+      if(state.isAuthenticated) {
         console.log("Re attempt")
-        store.dispatch(updateTokens(state.refreshToken))
-        
+        store.dispatch(updateTokens(state.refresh))
+      }
     }
+    
     // if (error.response.status === 401 && !originalRequest._retry && !(['/api/token/refresh','/api/token','/api/register'].includes(originalRequest.url)) ) {
     //     originalRequest._retry = true;
-    //     const [refreshTokenError, res] = await authApi.post('/api/token/refresh', {
-    //         refreshToken: store.getState().authReducer.refreshToken
+    //     const [refreshError, res] = await authApi.post('/api/token/refresh', {
+    //         refresh: store.getState().authReducer.refresh
     //     }).then(response => {
-    //         const { accessToken, refreshToken } = response.data;
+    //         const { access, refresh } = response.data;
 
     //         // store.dispatch(setAccessToken(access_token));
     //         // store.dispatch(setRefreshToken(refresh_token));
     //         // store.dispatch(setTokenExpiry(Date.now() + expires_in * 1000));
-    //         localStorage.setItem('accessToken', accessToken);
-    //         localStorage.setItem('refreshToken', refreshToken);
+    //         localStorage.setItem('access', access);
+    //         localStorage.setItem('refresh', refresh);
 
-    //         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+    //         originalRequest.headers.Authorization = `Bearer ${access}`;
     //         console.log("HEADER")
     //         return authApi(originalRequest);
     //     }).catch(error => {
@@ -66,8 +68,8 @@ authApi.interceptors.response.use((response)=>{
     //         return Promise.reject(error);
     //     });
     //     return Promise.reject(error);
-    //     if (refreshTokenError) {
-    //         return Promise.reject(refreshTokenError);
+    //     if (refreshError) {
+    //         return Promise.reject(refreshError);
     //     }
     //     return Promise.reject(error);
     // }

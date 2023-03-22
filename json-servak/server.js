@@ -28,8 +28,8 @@ server.post('/api/token', (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '5m' });
-  const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '7m' });
+  const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
+  const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
 
   res.json({ accessToken, refreshToken });
 });
@@ -46,7 +46,7 @@ server.post('/api/token/refresh', (req, res) => {
       throw new Error('User not found');
     }
 
-    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '30m' });
+    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
     res.json({ accessToken });
   } catch (error) {
     res.status(401).json({ message: 'Invalid refresh token' });
@@ -96,8 +96,8 @@ server.post('/api/register', (req, res) => {
     const user = { email, password: hashedPassword };
     router.db.get('users').push(user).write();
   
-    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '30m' });
-    const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '7d' });
+    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
+    const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
   
     res.json({ accessToken, refreshToken });
 });

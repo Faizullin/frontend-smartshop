@@ -4,6 +4,10 @@
       "id": 1,
       "email": "admin@example.com",
       "password": "$2b$10$MvltsnWiuqGIgiAf0F6txOxwlew8QRz59SQAh8E9ATaiK.6r15Lxm"
+    },
+    {
+      "email": "user1@example.com",
+      "password": "$2b$10$zhRJ7k9fc4APpfi4GdgXQ.pfUkXasMAD7Ev3Jm3HgHFy3AU6IahBy"
     }
   ],
   "products": [

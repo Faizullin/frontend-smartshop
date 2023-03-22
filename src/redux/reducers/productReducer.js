@@ -12,9 +12,10 @@ const initialState = {
         shops: [],
     },
     currentFilters: {
-        product_types: [],
-        shops: [],
+        shop: null,
+        type: null,
         search: '',
+        prices: [],
     },
     loading: true,
     error: {}
@@ -44,7 +45,7 @@ const productReducer = (state = initialState, actions) => {
         case SET_CURRENT_FILTERS:
             return {
                 ...state,
-                currentFilters: {...payload},
+                currentFilters: {...state.currentFilters,...payload},
             };
         default:
             return state;
