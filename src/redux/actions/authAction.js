@@ -13,7 +13,6 @@ export const setUser = (access) => {
 
 export const login = (data) => async (dispatch) => {
   try {
-    var bodyFormData = new FormData();
     const response = await authApi.post(`/api/token/`, data,{headers: 
         {'Content-Type': 'application/json','Access-Control-Allow-Credentials':true}});
     var { access, refresh } = response.data;
@@ -52,7 +51,6 @@ export const register = (data) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    //await authApi.post(`/logout`);
     dispatch({
       type: LOGOUT_SUCCESS,
     });
@@ -63,31 +61,32 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const updateTokens = (refresh) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post('/api/token/refresh/', {
-        refresh,
-      });
+export const updateTokens = (prevRequestError) => {
+  return (dispatch, getState) => {
+    axios.post('/api/token/refresh/', {
+      refresh: getState().authReducer.refresh,
+    }).then((response) => {
       const { access } = response.data;
       dispatch({
         type: UPDATE_TOKENS_SUCCESS,
-        payload: { access },
+        payload: { access, },
       });
-      return authApi(response.config);
-    } catch (error) {
-      
+      localStorage.setItem('access', access);
+      return authApi(prevRequestError.config)
+    }).catch((error) => {
+      console.log("Token update error",error)
       if (error.response.status === 401) {
-        console.log("update",error)
         dispatch({
           type: UPDATE_TOKENS_FAILURE,
           payload: error.response.data,
         });
-        window.location = '/auth/login';
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        //window.location = '/auth/login';
       }
-    }
-  };
-};
+    })
+  }
+}
 
 export function fetchRequest(additional) {
     return { type: FETCH_REQUEST, payload: { ...additional } };

@@ -11,19 +11,28 @@ export default function ProductShow() {
     const [product_quantity, setProduct_quantity] = useState(1)
     const dispatch = useDispatch();
 
-    const addToCart = () => {
+    const addToCart = (e) => {
+        e.preventDefault()
         var cart = localStorage.getItem('cart');
+        var qty =1
+        var newCartProduct = {
+            id: product.id,
+            qty,
+            shop: product.shop,
+        }
         if(!cart){
-            localStorage.setItem('cart',JSON.stringify({
-                'id': params.id,
-                'qty': product_quantity,
-            }));
+            localStorage.setItem('cart',JSON.stringify([newCartProduct]));
         }else{
-            cart = JSON.stringify({
-                'id': params.id,
-                'qty': product_quantity,
-            })
-        }  
+            cart = JSON.parse(cart);
+            cart.forEach((item)=>{
+                if(item.id===product.id){
+                    item.qty = Number(item.qty)+qty;
+                    newCartProduct = null;
+                }
+            });
+            Array.prototype.push.apply(cart,newCartProduct);
+            localStorage.setItem('cart',JSON.stringify(cart));
+        }   
     }
     useEffect(() => {
         dispatch(getProduct(params.id));
@@ -41,10 +50,10 @@ export default function ProductShow() {
                         <div className="row mt--30">
                             <div className="col-xl-6 col-lg-6 mt-30 wow fadeInUp animated">
                                 <div className="single-product-box one">
-                                    <div v-if="product" className="big-product single-product-one slider-for">
-                                        <div v-for="productImage in product.product_images">
+                                    <div className="big-product single-product-one slider-for">
+                                        <div >
                                             <div className="single-item">
-                                                <img src={product?.image ?? ""} alt=""/>
+                                                <img src={product?.image || ""} alt=""/>
                                                 <div className="ptag"> <span className="one">-20% </span> </div> <a href="#0"
                                                     className="love"> <i className="flaticon-like"></i> </a>
                                             </div>
@@ -54,7 +63,7 @@ export default function ProductShow() {
                                         <div v-if="product" className="product-slicknav single-product-one-nav slider-nav">
                                             <div v-for="productImage in product.product_images"> 
                                                 <span className="single-item">
-                                                    <img src={product?.image ?? ""} alt=""/>
+                                                    <img src={product?.image || ""} alt=""/>
                                                 </span>
                                             </div>
                                         </div>

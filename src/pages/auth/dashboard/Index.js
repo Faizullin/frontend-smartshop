@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Route, Router, Switch, useLocation, useNavigate } from 'react-router-dom';
 import authApi from '../../../api/authApi';
 import Breadcrumbs, { BreadcrumbsLink } from '../../../components/layouts/Breadcrumbs ';
 import Layout from '../../../components/layouts/Layout';
 import { fetchRequest, logout } from '../../../redux/actions/authAction';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-// import LoadingIndicator from '../LoadingIndicator';
 import OrdersTable from './OrdersTable';
-import Profile from './Profile';
 
 
 
@@ -43,9 +40,7 @@ function AuthDashboard() {
     const [user, setUser] = useState({
         name:'',
         email:'',
-        
     })
-    const location = useLocation()
     const dispatch = useDispatch()
     const { loading } = useSelector(state => state.authReducer)
     const [tabIndex, setTabIndex] = useState(0);
@@ -58,10 +53,15 @@ function AuthDashboard() {
             }));
             setUser(e.data)
         })
-    }, [])
+    }, [dispatch])
 
     const handleLogout = () => {
         dispatch(logout())
+    }
+    const handleDashboardOpen = () => {
+        if(user.canOpenDashboard){
+            window.location = '/dashboard/'
+        }
     }
 
     if(loading){
@@ -87,7 +87,7 @@ function AuthDashboard() {
                                     role="tablist" aria-orientation="vertical">                                                
                                     <CustomTab>Account Detail</CustomTab>
                                     <CustomTab>Orders</CustomTab>
-                                    <CustomTab>
+                                    <CustomTab onClick={handleDashboardOpen}>
                                         Shop Owner Dashboard
                                     </CustomTab>
                                     <CustomTab onClick={handleLogout}>

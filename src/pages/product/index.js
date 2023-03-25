@@ -24,7 +24,8 @@ export default function ProductIndex(){
         dispatch(getProducts(filters ?? {}));
     }
 
-    const addToCart = (product,qty=0) => {
+    const addToCart = (e,product,qty=0) => {
+        e.preventDefault()
         var cart = localStorage.getItem('cart'),
             qtyBlock =$('.qtyValue');
         if(qty){
@@ -91,8 +92,10 @@ export default function ProductIndex(){
                                                 filters.product_types.map((product_type,index) => (
                                                     (index < 6 ) && (<li key={product_type.id}> 
                                                             <a href="#0" className="img-box" onClick={(e) => {e.preventDefault();applyFilters({type:product_type.id})}}>
-                                                                <div className="inner"> <img src="/assets/images/shop/product-categories-v1-img2.png"
-                                                                        alt="" /> </div>
+                                                                <div className="inner"> 
+                                                                    <img src={product_type.image || ""}
+                                                                        alt="" />
+                                                                </div>
                                                             </a>
                                                             <div className="title"> 
                                                                 <a onClick={ (e) => {e.preventDefault();applyFilters({type:product_type.id})} }>

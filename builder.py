@@ -1,5 +1,5 @@
-import os,re
-os.sys
+import os,re,shutil
+
 
 input_path = "build"
 index_html_path = os.path.join(input_path,'index.html')
@@ -12,7 +12,7 @@ def convert():
     with open(index_html_path, 'r') as f:
         inp = f.read()
     inp =inp.replace('static/','')
-    html = '{% load static %}' + re.sub(rf'(src|href)="({static_path})(.*?)"', fr'\1="{new_prefix}\3{new_postfix}"', inp)
+    html = '{% load static %}{% if MyDebug %}<script>window.baseApiUrl="http://localhost:8000";</script>{% endif %}' + re.sub(rf'(src|href)="({static_path})(.*?)"', fr'\1="{new_prefix}\3{new_postfix}"', inp)
 
     with open(index_html_path,'w+') as f:
         f.write(html)
@@ -31,14 +31,20 @@ def getPath(dirs):
         t = os.path.join(t,f)
     return t
 def movementBuild():
-    static_path = getPath([input_path,'static'])
-    tmp = getPath( ['..','backend','backend-smartshop','shop_app','templates','index.html'] )
-    print(f'from {index_html_path} to {tmp}')
-    tmp = getPath(['..','backend','backend-smartshop','static'])
-    print(f'from {static_path} to { tmp }')
+    static_path_from = getPath(['build','static',])
+    app_html_path_from = getPath( ['build','index.html'] )
 
-    #os.rename(index_html_path,getPath(['..','backend','backend','shop_app','templates','index.html']))
-    #os.rename(static_path,getPath(['..','backend','backend','static']))
+    static_path_to = getPath(['..','backend','backend','shop_app','static'])
+    app_html_path_to = getPath( ['..','backend','backend','shop_app','templates','app.html'] )
+
+
+    if os.path.exists(app_html_path_to):
+        os.remove(app_html_path_to)
+    if os.path.exists(static_path_to):
+        shutil.rmtree(static_path_to)
+
+    os.rename(app_html_path_from,app_html_path_to)
+    os.rename(static_path_from,static_path_to)
     
 convert()
 movement()

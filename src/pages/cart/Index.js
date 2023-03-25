@@ -54,37 +54,6 @@ export default function CartIndex() {
     const updateCart = (tmpCartProducts = null) => {
         localStorage.setItem('cart',JSON.stringify(tmpCartProducts !== null ? tmpCartProducts : [...cartProducts]));
     }
-    const addToCart = (id,qty=0) => {
-        var cart = localStorage.getItem('cart'),
-            qtyBlock =$('.qtyValue');
-        if(qty){
-            qtyBlock.val(qty);//1
-        }
-        
-            
-        qty = qtyBlock.val();
-        qty = Number((qty) ? qty : 1);
-        qtyBlock.val(1);
-        var newCartProduct = [{
-            'id':id,
-            'qty':qty,
-        }];
-        if(!cart){
-            localStorage.setItem('cart',JSON.stringify(newCartProduct));
-        }else{
-            cart = JSON.parse(cart);
-            console.log('CART:',cart);
-            cart.forEach((item)=>{
-                if(item.id===id){
-                    item.qty = Number(item.qty)+qty;
-                    newCartProduct = null;
-                }
-            });
-            Array.prototype.push.apply(cart,newCartProduct);
-            localStorage.setItem('cart',JSON.stringify(cart));
-        }    
-    }
-
     const dispatch = useDispatch()
     const { error } = useSelector(state => state.productReducer)
     const [formData, setFormData] = useState({ name: "", email: "",address: "", });
@@ -140,7 +109,7 @@ export default function CartIndex() {
                                                     <td>
                                                         <div className="thumb-box">
                                                             <Link to={`/product/${product.id}`} className="thumb">
-                                                                <img src={ product.image ?? "" } alt=""/>
+                                                                <img src={ product.image || "" } alt=""/>
                                                             </Link> 
                                                             <Link to={`/product/${product.id}`} className="title">
                                                                 <h5>{ product.name }</h5>

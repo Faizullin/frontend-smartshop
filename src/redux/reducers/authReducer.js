@@ -70,7 +70,7 @@ const authReducer = (state = initialState, action) => {
         return {
           ...state,
           access: action.payload.access,
-          refresh: action.payload.refresh,
+          //refresh: action.payload.refresh,
           isAuthenticated: true,
           error: action.payload,
           user: null,

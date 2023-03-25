@@ -5,7 +5,6 @@ export default function OrdersTable() {
     const [userPurchases,setUserPurchases] = useState([])
     const getUserPurchases = () => {
         authApi.get('/api/purchases').then((response) => {
-            console.log(response.data)
             setUserPurchases(response.data)
         })
     }

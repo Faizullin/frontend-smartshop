@@ -8,7 +8,7 @@ export default  function ProductItem({product, addToCart, openPopupPrroduct}) {
                 <div className="products-three-single-img" style={{ height: '400px' }}> 
                     <Link to={`/product/${product.id}`} className="d-block">
                         <img
-                            src={product.image ?? ""}
+                            src={product.image || ""}
                             className="first-img" alt="" /> <img
                             src={ProductHoverImage}
                             alt="" className="hover-img" />

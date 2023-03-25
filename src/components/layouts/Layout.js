@@ -1,15 +1,24 @@
 import { useEffect, useRef } from "react";
 import jQuery from "jquery";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/actions/authAction";
 
 export default function Layout({children}){ 
     var cart_number= 0;
     const dataFetchedRef = useRef(false);
+    const dispatch = useDispatch()
+    const { isAuthenticated } = useSelector(state => state.authReducer);
+
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        dispatch(logout())
+    }
 
     useEffect(() => {
         if (dataFetchedRef.current) return;
         dataFetchedRef.current = true;
-        console.log('Triggering jquery');
         jQuery(document).trigger('changed')
     },[])
   return (
@@ -54,24 +63,42 @@ export default function Layout({children}){
                                   </div>
                                   <ul className="page-dropdown-menu">
                                       <li className="dropdown-list">
-                                      <Link to="/"> <span>Home </span></Link>
+                                        <Link to="/"> <span>Home </span></Link>
                                       </li>
                                       <li className="dropdown-list">
-                                      <Link to="/product"> <span>Products</span></Link>
+                                        <Link to="/product"> <span>Products</span></Link>
                                       </li>
-                                      <li className="dropdown-list"> <a href="#0"> <span>Pages</span> <span className="menuarrow"> <i
-                                                      className="flaticon-next-1"></i> </span> </a>
-                                          <ul className=" dropdown ">
+                                      <li className="dropdown-list"> 
+                                        <a>
+                                            <span>Pages</span>
+                                            <span className="menuarrow"> 
+                                                <i className="flaticon-next-1"></i>
+                                            </span> 
+                                        </a>
+                                        <ul className=" dropdown ">
                                               <li><Link to="/about"> About Us </Link></li>
                                               <li><Link to="/cart"> Cart </Link></li>
-                                              {/* <li><Link to="{name'contact'}">Contact</Link></li> */}
-                                              {/* <li><Link to="{name'auth.myAccount'}"> My Account </Link></li> */}
-                                              <li><a onClick={()=>{}}>Log out </a></li>
-                                          </ul>
+                                              {
+                                                isAuthenticated ? (
+                                                    <>
+                                                        <li><Link to="/profile"> Profile </Link></li>
+                                                        <li><a href="#" onClick={handleLogout}>Log out </a></li>
+                                                    </>
+                                                ) : ""
+                                              }                                              
+                                        </ul>
                                       </li>
-                                      {/* <li><Link to="{name'contact'}">Contact </Link></li> */}
-                                      <li><Link to="/auth/login">Login </Link></li>
-                                      <li><Link to="/auth/register">Register </Link></li>
+                                        {
+                                            isAuthenticated ? (
+                                                <li><Link to="/profile"> Profile </Link></li>
+                                            ) : (
+                                                <>
+                                                    <li><Link to="/auth/login">Login </Link></li>
+                                                    <li><Link to="/auth/register">Register </Link></li>
+                                                </>
+                                            )
+                                        }  
+                                      
                                   </ul>
                               </div>
                           </div>
@@ -92,14 +119,14 @@ export default function Layout({children}){
                                               <div className="right d-flex align-items-center ">
                                                   <div className="language currency"> <select>
                                                           <option>USD</option>
-                                                          <option value="1">INR</option>
-                                                          <option value="2">BDT</option>
+                                                          <option value="1">TG</option>
+                                                          <option value="2">RUB</option>
                                                       </select> </div>
                                                   <div className="language two">
                                                       <select>
-                                                          <option>ENGLISH </option>
-                                                          <option value="1">GERMAN</option>
-                                                          <option value="4">FRENCH</option>
+                                                          <option>KAZAKH </option>
+                                                          <option value="1">RUSSIAN</option>
+                                                          <option value="4">ENGLISH</option>
                                                       </select>
                                                   </div> 
                                                   <Link to="/auth/login"> Sign In </Link>
@@ -124,17 +151,24 @@ export default function Layout({children}){
                                                               <span>Products</span> 
                                                           </Link>
                                                           </li>
-                                                          <li className="dropdown-list"> <a href="#0"> <span>Pages </span> <span className="menuarrow"> <i className="flaticon-down-arrow"></i>
-                                                                  </span> </a>
-                                                              <ul className="dropdown">
-                                                                  <li><Link to="/about">About Us </Link></li>
-                                                                  <li><Link to="/cart">Cart</Link></li>
-                                                                  {/* <li><Link to="{name'contact'}"> Contact </Link></li>
-                                                                  <li><Link to="{name'auth.myAccount'}"> My Account </Link></li> */}
-                                                                  <li><a onClick={()=>{}}>Log out </a></li>
-                                                              </ul>
+                                                          <li className="dropdown-list"> 
+                                                            <a href=""> 
+                                                                <span>Pages </span> <span className="menuarrow"> <i className="flaticon-down-arrow"></i>
+                                                                </span> 
+                                                            </a>
+                                                            <ul className="dropdown">
+                                                                <li><Link to="/about">About Us </Link></li>
+                                                                <li><Link to="/cart">Cart</Link></li>
+                                                                {
+                                                                    isAuthenticated ? (
+                                                                        <>
+                                                                            <li><Link to="/profile"> Profile </Link></li>
+                                                                            <li><a href="#" onClick={handleLogout}>Log out </a></li>
+                                                                        </>
+                                                                    ) : ""
+                                                                }  
+                                                            </ul>
                                                           </li>
-                                                          {/* <li className="dropdown-list"> <Link to="{name'contact'}">Contact</Link> </li> */}
                                                       </ul>
                                                   </nav>
       
@@ -142,12 +176,12 @@ export default function Layout({children}){
                                                   <div className="right d-flex align-items-center justify-content-end">
                                                       <ul className="main-menu__widge-box d-flex align-items-center ">
                                                           <li className="d-lg-block d-none">
-                                                              <Link to="{name'auth.myAccount'}">
+                                                              <Link to="/profile">
                                                                   <i className="flaticon-user"></i>
                                                               </Link>
                                                           </li>
                                                           <li className="d-lg-block d-none">
-                                                              <Link to="{path'/wishlist'}"  className="number">
+                                                              <Link to="#"  className="number">
                                                                   <i className="flaticon-heart"></i>
                                                                   <span className="count">(2)</span>
                                                               </Link> 
@@ -164,7 +198,7 @@ export default function Layout({children}){
                                           </div>
                                       </div>
                                   </div>
-                              </div> <a href="shop-grid.html" className="offer-link"> Offer </a>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -199,7 +233,7 @@ export default function Layout({children}){
                                           <ul
                                               className="page-dropdown-menu d-flex align-items-center justify-content-center">
                                               <li className="dropdown-list">
-                                                  <Link to="{name'home'}">
+                                                  <Link to="/">
                                                       <span>Home</span>
                                                   </Link>
                                               </li>
@@ -208,17 +242,15 @@ export default function Layout({children}){
                                                       <span>Products </span>
                                                   </Link>
                                               </li>
-                                              <li className="dropdown-list"> <a href="#0"> <span>Pages </span> <span
+                                              <li className="dropdown-list"> <a href=""> <span>Pages </span> <span
                                                           className="menuarrow"> <i className="flaticon-down-arrow"></i>
                                                       </span> </a>
                                                   <ul className="dropdown">
                                                       <li><Link to="/about">About Us </Link></li>
                                                       <li><Link to="/cart">Cart</Link></li>
-                                                      {/* <li><Link to="{name'contact'}">Contact</Link></li> */}
-                                                      {/* <li><Link to="{name'auth.myAccount'}">My_Account</Link></li> */}
+                                                      <li><Link to="/profile">Profile</Link></li>
                                                   </ul>
                                               </li>
-                                              {/* <li className="dropdown-list"> <Link to="{name'contact'}">Contact</Link> </li> */}
                                           </ul>
                                       </nav>
 
@@ -248,7 +280,7 @@ export default function Layout({children}){
                                   </div>
                                   <div className="form_inner">
                                       <h4>Support</h4>
-                                      <form action="index.html" method="post">
+                                      <form method="post">
                                           <div className="form-group mt-4"> 
                                           <input type="text" name="name" placeholder="Name"
                                                   required=""/> </div>
@@ -317,7 +349,7 @@ export default function Layout({children}){
                                       <h4> Useful Links </h4>
                                   </div>
                                   <ul className="footer-links">
-                                      {/* <li><Link to="{name'auth.myAccount'}">Account</Link></li> */}
+                                      <li><Link to="/profile">Profile</Link></li>
                                       <li><Link to="/auth/login">Sign In</Link></li>
                                       <li><Link to="/cart">View Cart</Link></li>
                                   </ul>

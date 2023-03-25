@@ -28,26 +28,26 @@ server.post('/api/token', (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
-  const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
+  const access = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
+  const refresh = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
 
-  res.json({ accessToken, refreshToken });
+  res.json({ access, refresh });
 });
 
 // Authentication endpoint to refresh access token
 server.post('/api/token/refresh', (req, res) => {
-  const { refreshToken } = req.body;
+  const { refresh } = req.body;
 
   try {
-    const decoded = jwt.verify(refreshToken, REFRESH_SECRET_KEY);
+    const decoded = jwt.verify(refresh, REFRESH_SECRET_KEY);
 
     const user = router.db.get('users').find({ id: decoded.sub }).value();
     if (!user) {
       throw new Error('User not found');
     }
 
-    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
-    res.json({ accessToken });
+    const access = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
+    res.json({ access });
   } catch (error) {
     res.status(401).json({ message: 'Invalid refresh token' });
   }
@@ -96,10 +96,10 @@ server.post('/api/register', (req, res) => {
     const user = { email, password: hashedPassword };
     router.db.get('users').push(user).write();
   
-    const accessToken = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
-    const refreshToken = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
+    const access = jwt.sign({ sub: user.id }, SECRET_KEY, { expiresIn: '1m' });
+    const refresh = jwt.sign({ sub: user.id }, REFRESH_SECRET_KEY, { expiresIn: '2m' });
   
-    res.json({ accessToken, refreshToken });
+    res.json({ access, refresh });
 });
 
 server.use(router);
